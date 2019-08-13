@@ -1,0 +1,48 @@
+赤峰市
+小区
+红山区
+count = 259 actual = 259 bounds = 173
+元宝山区
+count = 62 actual = 62 bounds = 41
+松山区
+count = 201 actual = 202 bounds = 130
+阿鲁科尔沁旗
+count = 85 actual = 85 bounds = 55
+巴林左旗
+count = 72 actual = 72 bounds = 43
+巴林右旗
+count = 34 actual = 34 bounds = 22
+林西县
+count = 48 actual = 48 bounds = 41
+克什克腾旗
+count = 41 actual = 41 bounds = 18
+翁牛特旗
+count = 104 actual = 109 bounds = 66
+喀喇沁旗
+count = 50 actual = 50 bounds = 28
+宁城县
+count = 92 actual = 100 bounds = 57
+敖汉旗
+count = 81 actual = 81 bounds = 61
+
+楼
+红山区
+count = 900 actual = 900 bounds = NA
+元宝山区
+count = 142 actual = 137 bounds = NA
+松山区
+count = 900 actual = 900 bounds = NA
+巴林左旗
+count = 125 actual = 116 bounds = NA
+林西县
+count = 64 actual = 64 bounds = NA
+翁牛特旗
+count = 24 actual = 24 bounds = NA
+喀喇沁旗
+count = 38 actual = 38 bounds = NA
+宁城县
+count = 78 actual = 78 bounds = NA
+敖汉旗
+count = 162 actual = 148 bounds = NA
+
+

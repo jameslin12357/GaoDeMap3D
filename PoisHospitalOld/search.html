@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width initial-scale=1.0 maximum-scale=1.0 user-scalable=0">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>3D地图</title>
+    <style>
+        body,html{ margin:0;padding:0;font:12px/16px Verdana,Helvetica,Arial,sans-serif;width: 100%;height: 100%}
+        .container{
+            height: 100%
+        }
+    </style>
+    <link rel="stylesheet" href="./search.css">
+    <script language="javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=5a757297a2ef60c6c50aa13e4fb8f311&plugin=AMap.ControlBar"></script>
+
+</head>
+<body >
+<div id="container" style="width:100%; height:100%;resize:both;"></div>
+<button id="生成">生成</button>
+<button id="清空">清空</button>
+<div id="coordsContainer"></div>
+<script language="javascript">
+
+
+
+
+        // "poiBounds":"",
+        var buildingLayer = new AMap.Buildings({zIndex:130,merge:false,sort:false,zooms:[1,20]});
+        var options =
+            {
+                hideWithoutStyle:false,//是否隐藏设定区域外的楼块
+                areas:[{ //围栏1
+                    //visible:false,//是否可见
+                    rejectTexture:true,//是否屏蔽自定义地图的纹理
+                    color1: 'ffffff00',//楼顶颜色
+                    color2: 'ffffcc00',//楼面颜色
+                    path: [[123.418266,41.822943],[123.418324,41.822527],[123.419209,41.82257],[123.419142,41.82304]]
+                }
+                ]
+            };
+        buildingLayer.setStyle(options); //此配色优先级高于自定义mapStyle
+
+
+        var map = new AMap.Map("container", {
+            defaultCursor: "crosshair",
+            zooms: [3,20],
+            zoom:17,
+            pitch:50,
+            showIndoorMap:false,
+            showLabel:false,
+            mapStyle:'amap://styles/light',
+            center:[123.418266,41.822943],
+            features:['bg','point','road'],
+            viewMode:'3D',
+            layers:[
+                new AMap.TileLayer({}),
+                buildingLayer
+            ]
+        });
+
+
+        map.addControl(new AMap.ControlBar({
+            showZoomBar:true,
+            showControlButton:true,
+            position:{
+                right:'10px',
+                top:'10px'
+            }
+        }));
+
+        var marker = new AMap.Marker({
+            position: new AMap.LngLat(123.418266,41.822943),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+            title: '北京'
+        });
+
+// 将创建的点标记添加到已有的地图实例：
+        map.add(marker);
+        map.on('click', function(ev) {
+            // 触发事件的对象
+            var target = ev.target;
+
+            // 触发事件的地理坐标，AMap.LngLat 类型
+            var lnglat = ev.lnglat;
+
+
+            // 触发事件的像素坐标，AMap.Pixel 类型
+            var pixel = ev.pixel;
+
+            // 触发事件类型
+            var type = ev.type;
+            document.getElementById('coordsContainer').innerText += `[${lnglat.lng},${lnglat.lat}],`
+            //console.log(`${lnglat.lng},${lnglat.lat}`);
+        });
+
+
+        var button = document.getElementById('生成');
+        var coordsContainer = document.getElementById(('coordsContainer'));
+        var buttonClear = document.getElementById('清空');
+        button.addEventListener('click',function(e){
+            console.log(`[${coordsContainer.innerText.slice(0,coordsContainer.innerText.length - 1)}]`);
+            console.log(`"poiBounds":"[${coordsContainer.innerText.slice(0,coordsContainer.innerText.length - 1)}]",`);
+            var coords = JSON.parse(`[${coordsContainer.innerText.slice(0,coordsContainer.innerText.length - 1)}]`);
+            var path = [];
+            coords.forEach(function(coord) {
+                path.push(new AMap.LngLat(coord[0], coord[1]))
+            });
+            var polygon = new AMap.Polygon({
+                path: path,
+                fillColor: '#fff', // 多边形填充颜色
+                borderWeight: 2, // 线条宽度，默认为 1
+                strokeColor: 'red', // 线条颜色
+            });
+            map.add(polygon);
+        });
+        buttonClear.addEventListener('click',function(e){
+            coordsContainer.innerText = "";
+
+            map.clearMap();
+        });
+        var p1 = new AMap.LngLat(123.400978,41.8218547);
+        var p2 = new AMap.LngLat(123.401219,41.821675);
+
+        var dis = AMap.GeometryUtil.distance(p1, p2);
+        console.log(dis);
+
+</script>
+</body>
+</html>

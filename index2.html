@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css" />
+    <title>地图显示</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<!-- 加载地图JSAPI脚本 -->
+<script src="https://webapi.amap.com/maps?v=1.4.15&key=5a757297a2ef60c6c50aa13e4fb8f311&plugin=AMap.ControlBar"></script>
+<script src="https://webapi.amap.com/loca?v=1.3.0&key=5a757297a2ef60c6c50aa13e4fb8f311"></script>
+<script>
+    var map = new AMap.Map('container', {
+        resizeEnable: true,
+        rotateEnable:true,
+        pitchEnable:true,
+        zoom: 17,
+        pitch: 45,
+        rotation:-15,
+        viewMode:'3D',//开启3D视图,默认为关闭
+        buildingAnimation:true,//楼块出现是否带动画
+        expandZoomRange:true,
+        zooms:[3,20],
+        center:[123.43,41.80],
+        features: ["bg","building"]
+    });
+
+    map.addControl(new AMap.ControlBar({
+        showZoomBar:false,
+        showControlButton:true,
+        position:{
+            right:'10px',
+            top:'10px'
+        }
+    }));
+
+    var ids = [];
+    var bounds = [];
+    $.ajax({
+        type: "get",
+        url: "https://restapi.amap.com/v3/place/text?key=c7aeb11746b35a92b7b6eee3178a05e4&keywords=&types=090000&city=210100&children=1&offset=50&page=1&extensions=all",
+        dataType: "json",
+        success: function (data) {
+            console.log(data);
+            var pois = data.pois;
+            for (var i = 0; i < pois.length; i++){
+                var id = pois[i].id;
+                ids.push(id);
+            }
+
+            // console.log(ids);
+            // for (var j = 0; j < ids.length; j++){
+            //     var id = ids[j];
+            //     $.ajax({
+            //         type: "get",
+            //         // url: `https://ditu.amap.com/detail/get/detail?id=${id}`,
+            //         url: `https://www.amap.com/detail/get/detail?id=${id}`,
+            //         dataType: "json",
+            //         success: function (data) {
+            //             console.log(data);
+            //         },
+            //         error: function (item, err) {
+            //             console.log(err);
+            //         }
+            //     });
+            // }
+
+        },
+        error: function (item, err) {
+            console.log(err);
+        }
+    });
+    var object3Dlayer = new AMap.Object3DLayer();
+    map.add(object3Dlayer);
+    var bounds = [
+        new AMap.LngLat(123.408114,41.743483),
+        new AMap.LngLat(123.40802,41.743251),
+        new AMap.LngLat(123.408331,41.742495),
+        new AMap.LngLat(123.408513,41.742429),
+        new AMap.LngLat(123.409981,41.742767),
+        new AMap.LngLat(123.409565,41.743824),
+        new AMap.LngLat(123.408114,41.743483)
+    ];
+    var bounds2 = [
+        new AMap.LngLat(123.410265,41.792341),
+        new AMap.LngLat(123.410318,41.79235),
+        new AMap.LngLat(123.411957,41.791646),
+        new AMap.LngLat(123.411628,41.791242),
+        new AMap.LngLat(123.411887,41.791125),
+        new AMap.LngLat(123.411385,41.790502),
+        new AMap.LngLat(123.40945,41.791316),
+        new AMap.LngLat(123.410265,41.792341)
+    ];
+    // var bounds3 = [
+    //     new AMap.LngLat(123.391171,41.77517),
+    //     new AMap.LngLat(123.392112,41.774743),
+    //     new AMap.LngLat(123.391813,41.774356),
+    //     new AMap.LngLat(123.390864,41.774763)
+    // ];
+    // var bounds4 = [
+    //     new AMap.LngLat(123.383944,41.760563),
+    //     new AMap.LngLat(123.384657,41.760387),
+    //     new AMap.LngLat(123.384344,41.759558),
+    //     new AMap.LngLat(123.383672,41.759697)
+    // ];
+    var height = 500;
+    var color = '#0088ff';//rgba
+    var prism = new AMap.Object3D.Prism({
+        path:bounds,
+        height:height,
+        color:'red'
+    });
+    var prism2 = new AMap.Object3D.Prism({
+        path:bounds2,
+        height:height,
+        color:'green'
+    });
+    // var prism3 = new AMap.Object3D.Prism({
+    //     path:bounds3,
+    //     height:height,
+    //     color:'yellow'
+    // });
+    // var prism4 = new AMap.Object3D.Prism({
+    //     path:bounds4,
+    //     height:height,
+    //     color:'orange'
+    // });
+    object3Dlayer.add(prism);//添加
+    object3Dlayer.add(prism2);//添加
+    // object3Dlayer.add(prism3);//添加
+    // object3Dlayer.add(prism4);//添加
+</script>
+</body>
+</html>
+
+
+path: [[123.408114,41.743483],[123.40802,41.743251],[123.408331,41.742495],[123.408513,41.742429],[123.409981,41.742767],[123.409565,41.743824],[123.408114,41.743483]]

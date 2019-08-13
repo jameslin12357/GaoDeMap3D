@@ -1,0 +1,13 @@
+#生成 {
+    position: fixed;
+    top: 25px;
+    left: 25px;
+    padding: 20px;
+}
+
+#清空 {
+    position: fixed;
+    top: 25px;
+    left: 100px;
+    padding: 20px;
+}

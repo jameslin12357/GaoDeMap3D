@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>默认点标记</title>
+    <link rel="stylesheet" href="https://a.amap.com/jsapi_demos/static/demo-center/css/demo-center.css"/>
+
+    <style>
+        html, body, #container {
+            height: 100%;
+            width: 100%;
+        }
+
+        .amap-icon img,
+        .amap-marker-content img{
+            width: 25px;
+            height: 34px;
+        }
+
+        .marker {
+            position: absolute;
+            top: -20px;
+            right: -118px;
+            color: #fff;
+            padding: 4px 10px;
+            box-shadow: 1px 1px 1px rgba(10, 10, 10, .2);
+            white-space: nowrap;
+            font-size: 12px;
+            font-family: "";
+            background-color: #25A5F7;
+            border-radius: 3px;
+        }
+
+        .input-card{
+            width: 18rem;
+            z-index: 170;
+        }
+
+        .input-card .btn{
+            margin-right: .8rem;
+        }
+
+        .input-card .btn:last-child{
+            margin-right: 0;
+        }
+
+        #lnglat {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 2000;
+        }
+    </style>
+</head>
+<body>
+<button id="done">done</button>
+<div id="lnglat"></div>
+<div id="container"></div>
+<div class="input-card">
+    <label style="color:grey">点标记操作</label>
+
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+<script type="text/javascript"
+        src="https://webapi.amap.com/maps?v=1.4.15&key=5a757297a2ef60c6c50aa13e4fb8f311&plugin=Map3D,AMap.Scale,AMap.ControlBar,AMap.MouseTool,AMap.PolyEditor"></script>
+<script type="text/javascript">
+    var lnglatC = document.getElementById('lnglat');
+    var done = document.getElementById('done');
+
+    var buildingLayer = new AMap.Buildings({opacity:0.7,zIndex:130,merge:false,sort:false,zooms:[3,20]});
+    var options =
+        {
+            hideWithoutStyle:false,//是否隐藏设定区域外的楼块
+            areas: [{
+                rejectTexture:true,//是否屏蔽自定义地图的纹理
+                color1: 'ffffff00',//楼顶颜色
+                color2: 'ffffcc00',//楼面颜色
+                path: [[123.505127,41.833052],[123.505913,41.831871],[123.506374,41.831157],[123.506921,41.830388],[123.507853,41.830751],[123.509173,41.831251],[123.508658,41.831983],[123.508104,41.832809],[123.50748,41.833874],[123.506702,41.833596],[123.505734,41.833223]]
+            }]
+        };
+    buildingLayer.setStyle(options); //此配色优先级高于自定义mapStyle
+    var map = new AMap.Map("container", {
+        zooms: [3,20],
+        zoom:17,
+        pitch:100,
+        showIndoorMap:false,
+        showLabel:true,
+        mapStyle:'amap://styles/normal',
+        center:[116.368904,39.913423],
+        features:['bg','point','road','building'],
+        viewMode:'3D',
+        layers:[
+            new AMap.TileLayer({}),
+            buildingLayer
+        ]
+
+    });
+
+    map.addControl(new AMap.Scale());
+    map.addControl(new AMap.ControlBar({
+        showZoomBar:false,
+        showControlButton:true,
+        position:{
+            right:'10px',
+            top:'10px'
+        }
+    }));
+    function editLine(){
+        var path = [
+            new AMap.LngLat(116.368904,39.913423),
+            new AMap.LngLat(116.382122,39.901176),
+            new AMap.LngLat(116.387271,39.912501),
+            new AMap.LngLat(116.398258,39.904600)
+        ];
+
+        var polygon = new AMap.Polygon({
+            path: path,
+            fillColor: '#fff', // 多边形填充颜色
+            borderWeight: 2, // 线条宽度，默认为 1
+            strokeColor: 'red', // 线条颜色
+        });
+        polygon.on('click',function(e){
+            console.log(e);
+            map.plugin(["AMap.PolyEditor"],function(){
+                polylineEditor = new AMap.PolyEditor(map,e.target);
+                polylineEditor.open();
+            });
+        });
+        polygon.on('dblclick',function(e){
+            console.log(e);
+            console.log(e.target.getArea());
+            console.log(e.target.getBounds());
+            console.log(e.target.getPath());
+            var path = [];
+            e.target.getPath().forEach(function(point){
+                path.push([point.lng,point.lat]);
+                var marker = new AMap.Marker({
+                    icon: "https://webapi.amap.com/theme/v1.3/markers/n/mark_b.png",
+                    position: [point.lng,point.lat]
+                });
+                map.add(marker);
+            });
+            console.log(path);
+            var options =
+                {
+                    hideWithoutStyle: false,//是否隐藏设定区域外的楼块
+                    areas: [{ //围栏1
+                        //visible:false,//是否可见
+                        rejectTexture:true,//是否屏蔽自定义地图的纹理
+                        color1: 'ffffff00',//楼顶颜色
+                        color2: 'ffffcc00',//楼面颜色
+                        path: path
+                    }]
+                };
+            buildingLayer.setStyle(options); //此配色优先级高于自定义mapStyle
+        });
+        map.add(polygon);
+
+        //构造折线编辑对象，并开启折线的编辑状态
+        // map.plugin(["AMap.PolyEditor"],function(){
+        //     polylineEditor = new AMap.PolyEditor(map,polygon);
+        //     polylineEditor.open();
+        // });
+    }
+
+    editLine();
+    // map.on('click', function(ev) {
+    //     // 触发事件的对象
+    //     var target = ev.target;
+    //
+    //     // 触发事件的地理坐标，AMap.LngLat 类型
+    //     var lnglat = ev.lnglat;
+    //     var lng = lnglat["lng"];
+    //     var lat = lnglat["lat"];
+    //     lnglatC.innerText += `[${lng},${lat}],`;
+    //     console.log(lnglat);
+    //     // 触发事件的像素坐标，AMap.Pixel 类型
+    //     var pixel = ev.pixel;
+    //
+    //     // 触发事件类型
+    //     var type = ev.type;
+    //
+    // });
+    // done.addEventListener('click',function(e){
+    //     console.log(`[${lnglatC.innerText.slice(0,lnglatC.innerText.length-1)}]`);
+    // })
+
+
+
+
+
+
+
+
+
+
+    //
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script>
+
+</script>
+</body>
+</html>

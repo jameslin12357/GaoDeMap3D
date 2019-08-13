@@ -1,0 +1,149 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <style type="text/css">
+        #container,html,body{
+            height: 100%;
+            margin:0;
+        }
+    </style>
+    <title>3D楼块</title>
+    <script language="javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=您申请的key值&plugin=Map3D,AMap.Scale"></script>
+    <script language="javascript">
+        function mapInit() {
+            var buildingLayer = new AMap.Buildings({zIndex:130,merge:false,sort:false,zooms:[17,20]});
+            var pathsytlsyxx = [[123.391171,41.77517],[123.392112,41.774743],[123.391813,41.774356],[123.390864,41.774763],[123.391171,41.77517]];
+            var pathnjyx = [[123.402822,41.78863],[123.402332,41.787974],[123.403241,41.787584],[123.403732,41.78825]];
+
+            var color1 = "898989ff";
+            var color2 = "8989ffc4";
+            var options =
+                {
+                    hideWithoutStyle:false,//是否隐藏设定区域外的楼块
+                    areas:[
+                    //     { //围栏1
+                    //     //visible:false,//是否可见
+                    //     height: '5000',
+                    //     rejectTexture:true,//是否屏蔽自定义地图的纹理
+                    //     color1: 'ffffff00',//楼顶颜色
+                    //     color2: 'ffffcc00',//楼面颜色
+                    //     path: [[123.408114,41.743483],[123.40802,41.743251],[123.408331,41.742495],[123.408513,41.742429],[123.409981,41.742767],[123.409565,41.743824],[123.408114,41.743483]]
+                    // }
+                        {
+                            // 沈阳铁路实验小学 center [123.391487,41.77476]
+                            //visible:false,//是否可见
+                            rejectTexture:true,//是否屏蔽自定义地图的纹理
+                            color1: color1,//楼顶颜色
+                            color2: color1,//楼面颜色
+                            path: pathsytlsyxx
+                        },
+                        {
+                            // 南京一校 center [123.403032,41.788109]
+                            //visible:false,//是否可见
+                            rejectTexture:true,//是否屏蔽自定义地图的纹理
+                            color1: color2,//楼顶颜色
+                            color2: color2,//楼面颜色
+                            path: pathnjyx
+                        }
+                    ]
+                };
+            buildingLayer.setStyle(options); //此配色优先级高于自定义mapStyle
+
+            // 南京一校
+            var map = new AMap.Map("container", {
+                zoom:17,
+                pitch:50,
+                showIndoorMap:false,
+                showLabel:false,
+                mapStyle:'amap://styles/light',
+                center:[123.403032,41.788109],
+                features:['bg','point','road'],
+                viewMode:'3D',
+                layers:[
+                    new AMap.TileLayer({}),
+                    buildingLayer
+                ]
+            });
+            map.addControl(new AMap.Scale());
+            // new AMap.Polygon({
+            //     bubble:true,
+            //     fillOpacity:0.4,
+            //     strokeWeight:1,
+            //     path:options.areas[0].path,
+            //     map:map,
+            //     //fillColor: "#8989ff"
+            // });
+            // new AMap.Polygon({
+            //     bubble:true,
+            //     fillOpacity:0.4,
+            //     strokeWeight:1,
+            //     path:options.areas[1].path,
+            //     map:map,
+            //     //fillColor: "#8989ff"
+            // });
+            // new AMap.Polygon({
+            //     bubble:true,
+            //     fillColor:'green',
+            //     fillOpacity:0.2,
+            //     strokeWeight:1,
+            //     path:options.areas[1].path,
+            //     map:map
+            // })
+
+            AMap.plugin([
+                'AMap.ControlBar',
+            ], function(){
+
+                // 添加 3D 罗盘控制
+                map.addControl(new AMap.ControlBar());
+            });
+
+            map.on('click', function(ev) {
+                // 触发事件的对象
+                var target = ev.target;
+                // 触发事件的地理坐标，AMap.LngLat 类型
+                var lnglat = ev.lnglat;
+                // 触发事件的像素坐标，AMap.Pixel 类型
+                var pixel = ev.pixel;
+                // 触发事件类型
+                var type = ev.type;
+                console.log(lnglat)
+            });
+
+            var marker = new AMap.Marker({
+                position: new AMap.LngLat(123.402822,41.78863),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                title: '北京'
+            });
+            var marker2 = new AMap.Marker({
+                position: new AMap.LngLat(123.402332,41.787974),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                title: '北京'
+            });
+            var marker3 = new AMap.Marker({
+                position: new AMap.LngLat(123.403241,41.787584),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                title: '北京'
+            });
+            var marker4 = new AMap.Marker({
+                position: new AMap.LngLat(123.403732,41.78825),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                title: '北京'
+            });
+            var marker5 = new AMap.Marker({
+                position: new AMap.LngLat(123.403032,41.788109),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                title: '北京'
+            });
+
+// 将创建的点标记添加到已有的地图实例：
+            map.add(marker);
+            map.add(marker2);
+            map.add(marker3);
+            map.add(marker4);
+            map.add(marker5);
+        }
+
+    </script>
+</head>
+<body onload="mapInit();">
+<div id="container" ></div>
+</body>
+</html>

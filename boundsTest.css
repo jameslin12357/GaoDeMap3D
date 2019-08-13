@@ -1,0 +1,181 @@
+#checkboxPoiType {
+    position: fixed;
+    top: 25px;
+    left: 25px;
+    max-width: 550px;
+}
+
+#inputSearchContainer {
+    position: fixed;
+    top: 25px;
+    right: 125px;
+}
+
+
+.ml-0 {
+    margin-left: 0!important;
+}
+
+.layui-form-checkbox {
+    margin-bottom: 5px;
+}
+
+.layui-form-checked[lay-skin="red"] span {
+    background-color: #8b0000;
+}
+
+.layui-form-checked[lay-skin="red"] i {
+    color: #8b0000;
+}
+
+.layui-form-checked[lay-skin="green"] span {
+    background-color: #008b00;
+}
+
+.layui-form-checked[lay-skin="green"] i {
+    color: #008b00;
+}
+
+.layui-form-checked[lay-skin="blue"] span {
+    background-color: #00008b;
+}
+
+.layui-form-checked[lay-skin="blue"] i {
+    color: #00008b;
+}
+
+.layui-form-checked[lay-skin="redLight"] span {
+    background-color: #ff0000;
+}
+
+.layui-form-checked[lay-skin="redLight"] i {
+    color: #ff0000;
+}
+
+.layui-form-checked[lay-skin="orange"] span {
+    background-color: #ff8c00;
+}
+
+.layui-form-checked[lay-skin="orange"] i {
+    color: #ff8c00;
+}
+
+.layui-form-checked[lay-skin="cyan"] span {
+    background-color: #00ffff;
+}
+
+.layui-form-checked[lay-skin="cyan"] i {
+    color: #00ffff;
+}
+
+.layui-form-checked[lay-skin="lightgreen"] span {
+    background-color: #00ff7f;
+}
+
+.layui-form-checked[lay-skin="lightgreen"] i {
+    color: #00ff7f;
+}
+
+.layui-form-checked[lay-skin="yellow"] span {
+    background-color: #ffff00;
+}
+
+.layui-form-checked[lay-skin="yellow"] i {
+    color: #ffff00;
+}
+
+.layui-form-checked[lay-skin="purple"] span {
+    background-color: #8000ff;
+}
+
+.layui-form-checked[lay-skin="purple"] i {
+    color: #8000ff;
+}
+
+.layui-form-checked[lay-skin="brown"] span {
+    background-color: #914929;
+}
+
+.layui-form-checked[lay-skin="brown"] i {
+    color: #914929;
+}
+
+.layui-form-checked[lay-skin="midgreen"] span {
+    background-color: #719129;
+}
+
+.layui-form-checked[lay-skin="midgreen"] i {
+    color: #719129;
+}
+
+.layui-form-checked[lay-skin="pink"] span {
+    background-color: #912971;
+}
+
+.layui-form-checked[lay-skin="pink"] i {
+    color: #912971;
+}
+
+.layui-form-checked[lay-skin="midpink"] span {
+    background-color: #9d7b84;
+}
+
+.layui-form-checked[lay-skin="midpink"] i {
+    color: #9d7b84;
+}
+
+.flex {
+    display: flex;
+}
+
+.mr-10 {
+    margin-right: 10px;
+}
+
+/*.layui-form-checked span:nth-of-type(1), .layui-form-checked:hover span:nth-of-type(1) {*/
+/*    background-color: #8b0000;*/
+/*}*/
+
+/*.layui-form-checked i:nth-of-type(1), .layui-form-checked:hover i:nth-of-type(1) {*/
+/*    color: #8b0000;*/
+/*}*/
+
+/*.layui-form-checked span:nth-of-type(2), .layui-form-checked:hover span:nth-of-type(2) {*/
+/*    background-color: #008b00;*/
+/*}*/
+
+/*.layui-form-checked i:nth-of-type(2), .layui-form-checked:hover i:nth-of-type(2) {*/
+/*    color: #008b00;*/
+/*}*/
+
+/*.layui-form-checked span:nth-of-type(3), .layui-form-checked:hover span:nth-of-type(3) {*/
+/*    background-color: #00008b;*/
+/*}*/
+
+/*.layui-form-checked i:nth-of-type(3), .layui-form-checked:hover i:nth-of-type(3) {*/
+/*    color: #00008b;*/
+/*}*/
+
+/*.bgRed {*/
+/*    background-color: #8b0000!important;*/
+/*}*/
+
+/*.clRed {*/
+/*    color: #8b0000!important;*/
+/*}*/
+
+/*.bgGreen {*/
+/*    background-color: #008b00!important;*/
+/*}*/
+
+/*.clGreen {*/
+/*    color: #008b00!important;*/
+/*}*/
+
+/*.bgBlue {*/
+/*    background-color: #00008b!important;*/
+/*}*/
+
+/*.clBlue {*/
+/*    color: #00008b!important;*/
+/*}*/
