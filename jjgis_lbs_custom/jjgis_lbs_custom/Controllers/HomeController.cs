@@ -89,9 +89,9 @@ namespace jjgis_lbs_custom.Controllers
             return View();
         }
 
-        public object Insert2()
+        public string Insert2()
         {
-            string string1 = System.IO.File.ReadAllText(@"C:\Users\Administrator\Desktop\CFS\L\AHQ_L.txt", Encoding.UTF8);
+            string string1 = System.IO.File.ReadAllText(@"C:\Users\Administrator\Desktop\CFS\L\YBSQ_L.txt", Encoding.UTF8);
             List<Dictionary<string, string>> obj1 = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(string1);
             string connectionString = "User Id=LBSUSER;Password=LBSPWD;Data Source=10.1.8.17:1521/JJLBS";
             OracleConnection connection = new OracleConnection(connectionString);
@@ -100,13 +100,13 @@ namespace jjgis_lbs_custom.Controllers
                 if (obj1[i]["poiParent"].Length != 0)
                     
                 {
-                    String poiParent = obj1[i]["poiParent"];
+                    string poiParent = obj1[i]["poiParent"];
                     DataSet ds = new DataSet();
                         try
                         {
                             connection.Open();
-                            OracleDataAdapter command = new OracleDataAdapter($"select VILLAGE_NAME,VILLAGE_CODE,UTL_RAW.cast_to_varchar2(VILLAGE_ID)as VILLAGE_ID from LBS_VILLAGE where VILLAGE_CODE = '{poiParent}'", connection);
-
+                            OracleDataAdapter command = new OracleDataAdapter($"begin insert into LBS_BUILDING lb (BUILDING_CODE, BUILDING_NAME, BUILDING_ADDRESS, BUILDING_REGION, BUILDING_TYPE, BUILDING_X, BUILDING_Y, BUILDING_LNG, BUILDING_LAT, BUILDING_BOUNDS, VILLAGE_ID) values ('{obj1[i]["poiId"]}','{obj1[i]["poiName"]}','{obj1[i]["poiAddress"]}','{obj1[i]["poiRegion"]}','{obj1[i]["poiType"]}','{obj1[i]["poiLng"]}','{obj1[i]["poiLat"]}','{obj1[i]["poiLng"]}','{obj1[i]["poiLat"]}','{obj1[i]["poiBounds"]}',(select VILLAGE_ID from LBS_VILLAGE lv WHERE lv.VILLAGE_CODE = '{obj1[i]["poiParent"]}' and rownum<2));commit;end;", connection);
+                            
                             command.Fill(ds, "ds");
                         }
                         catch (OracleException ex)
@@ -114,18 +114,28 @@ namespace jjgis_lbs_custom.Controllers
                             throw new Exception(ex.Message);
                         }
                         connection.Close();
-                    return ds.Tables[0].Rows[0]["VILLAGE_ID"];
-                    
+                } else
+                {
+                    string poiParent = obj1[i]["poiParent"];
+                    DataSet ds = new DataSet();
+                    try
+                    {
+                        connection.Open();
+                        OracleDataAdapter command = new OracleDataAdapter($"begin insert into LBS_BUILDING lb (BUILDING_CODE, BUILDING_NAME, BUILDING_ADDRESS, BUILDING_REGION, BUILDING_TYPE, BUILDING_X, BUILDING_Y, BUILDING_LNG, BUILDING_LAT, BUILDING_BOUNDS) values ('{obj1[i]["poiId"]}','{obj1[i]["poiName"]}','{obj1[i]["poiAddress"]}','{obj1[i]["poiRegion"]}','{obj1[i]["poiType"]}','{obj1[i]["poiLng"]}','{obj1[i]["poiLat"]}','{obj1[i]["poiLng"]}','{obj1[i]["poiLat"]}','{obj1[i]["poiBounds"]}');commit;end;", connection);
 
-                    
-                    
-                    
+                        command.Fill(ds, "ds");
+                    }
+                    catch (OracleException ex)
+                    {
+                        throw new Exception(ex.Message);
+                    }
+                    connection.Close();
                 }
                 //string sql = $"begin insert into LBS_VILLAGE (VILLAGE_CODE, VILLAGE_NAME, VILLAGE_ADDRESS, VILLAGE_REGION, VILLAGE_TYPE, VILLAGE_X, VILLAGE_Y, VILLAGE_LNG, VILLAGE_LAT, VILLAGE_BOUNDS) values ('{obj1[i]["poiId"]}','{obj1[i]["poiName"]}','{obj1[i]["poiAddress"]}','{obj1[i]["poiRegion"]}','{obj1[i]["poiType"]}','{obj1[i]["poiLng"]}','{obj1[i]["poiLat"]}','{obj1[i]["poiLng"]}','{obj1[i]["poiLat"]}','{obj1[i]["poiBounds"]}');commit;end;";
                 
             }
-            object a = "";
-            return a;
+            string state = "inserted";
+            return state;
         }
 
 
