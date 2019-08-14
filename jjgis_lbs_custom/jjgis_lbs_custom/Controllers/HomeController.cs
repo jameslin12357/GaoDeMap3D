@@ -105,7 +105,7 @@ namespace jjgis_lbs_custom.Controllers
                         try
                         {
                             connection.Open();
-                            OracleDataAdapter command = new OracleDataAdapter($"begin insert into LBS_BUILDING lb (BUILDING_CODE, BUILDING_NAME, BUILDING_ADDRESS, BUILDING_REGION, BUILDING_TYPE, BUILDING_X, BUILDING_Y, BUILDING_LNG, BUILDING_LAT, BUILDING_BOUNDS, VILLAGE_ID) values ('{obj1[i]["poiId"]}','{obj1[i]["poiName"]}','{obj1[i]["poiAddress"]}','{obj1[i]["poiRegion"]}','{obj1[i]["poiType"]}','{obj1[i]["poiLng"]}','{obj1[i]["poiLat"]}','{obj1[i]["poiLng"]}','{obj1[i]["poiLat"]}','{obj1[i]["poiBounds"]}',(select VILLAGE_ID from LBS_VILLAGE lv WHERE lv.VILLAGE_CODE = '{obj1[i]["poiParent"]}' and rownum<2));commit;end;", connection);
+                            OracleDataAdapter command = new OracleDataAdapter($"begin insert into LBS_BUILDING lb (CODE, BUILDING_NUMBER, BUILDING_ADDRESS, REGION, TYPE, X, Y, LNG, LAT, BOUNDS, VILLAGE_ID, BUILDING_NAME) values ('{obj1[i]["poiId"]}','{obj1[i]["poiName"]}','{obj1[i]["poiAddress"]}','{obj1[i]["poiRegion"]}','{obj1[i]["poiType"]}','{obj1[i]["poiLng"]}','{obj1[i]["poiLat"]}','{obj1[i]["poiLng"]}','{obj1[i]["poiLat"]}','{obj1[i]["poiBounds"]}',(select VILLAGE_ID from LBS_VILLAGE lv WHERE lv.VILLAGE_CODE = '{obj1[i]["poiParent"]}' and rownum<2),'{obj1[i]["poiBrief"]}');commit;end;", connection);
                             
                             command.Fill(ds, "ds");
                         }
@@ -121,7 +121,7 @@ namespace jjgis_lbs_custom.Controllers
                     try
                     {
                         connection.Open();
-                        OracleDataAdapter command = new OracleDataAdapter($"begin insert into LBS_BUILDING lb (BUILDING_CODE, BUILDING_NAME, BUILDING_ADDRESS, BUILDING_REGION, BUILDING_TYPE, BUILDING_X, BUILDING_Y, BUILDING_LNG, BUILDING_LAT, BUILDING_BOUNDS) values ('{obj1[i]["poiId"]}','{obj1[i]["poiName"]}','{obj1[i]["poiAddress"]}','{obj1[i]["poiRegion"]}','{obj1[i]["poiType"]}','{obj1[i]["poiLng"]}','{obj1[i]["poiLat"]}','{obj1[i]["poiLng"]}','{obj1[i]["poiLat"]}','{obj1[i]["poiBounds"]}');commit;end;", connection);
+                        OracleDataAdapter command = new OracleDataAdapter($"begin insert into LBS_BUILDING lb (CODE, BUILDING_NUMBER, BUILDING_ADDRESS, REGION, TYPE, X, Y, LNG, LAT, BOUNDS, BUILDING_NAME) values ('{obj1[i]["poiId"]}','{obj1[i]["poiName"]}','{obj1[i]["poiAddress"]}','{obj1[i]["poiRegion"]}','{obj1[i]["poiType"]}','{obj1[i]["poiLng"]}','{obj1[i]["poiLat"]}','{obj1[i]["poiLng"]}','{obj1[i]["poiLat"]}','{obj1[i]["poiBounds"]}','{obj1[i]["poiBrief"]}');commit;end;", connection);
 
                         command.Fill(ds, "ds");
                     }

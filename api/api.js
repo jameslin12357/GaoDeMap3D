@@ -29,6 +29,20 @@ function getPois(type,location){
     }
 }
 
+function getPoiBrief(str){
+    var r = str.match(/[a-zA-Z]/);
+    if (r !== null) {
+        return str.slice(r["index"]);
+    } else {
+        var r2 = str.match(/\d/);
+        if (r2 !== null) {
+            return str.slice(r2["index"]);
+        } else {
+            return str;
+        }
+    }
+}
+
 // count = 162 actual = 148 bounds = NA
 function getPoisL(type,location){
     for (var i = 0; i < 9; i++) {
@@ -40,7 +54,8 @@ function getPoisL(type,location){
             console.log(pois);
 
             pois.forEach(function(poi){
-                ids += `{"poiId":"${poi.id}","poiLocation":"${poi.location}","poiLng":"${poi.location.split(",")[0]}","poiLat":"${poi.location.split(",")[1]}","poiName":"${poi.name}","poiType":"${poi.type}","poiAddress":"${poi.address}","poiBounds":"null","poiPcode":"${poi.pcode}","poiPname":"${poi.pname}","poiCitycode":"${poi.citycode}","poiCityname":"${poi.cityname}","poiAdcode":"${poi.adcode}","poiAdname":"${poi.adname}","poiRegion":"${poi.pname}/${poi.cityname}/${poi.adname}","poiParent":"${poi.parent}"},`;
+                var poiBrief = getPoiBrief(poi.name);
+                ids += `{"poiId":"${poi.id}","poiLocation":"${poi.location}","poiLng":"${poi.location.split(",")[0]}","poiLat":"${poi.location.split(",")[1]}","poiName":"${poi.name}","poiType":"${poi.type}","poiAddress":"${poi.address}","poiBounds":"null","poiPcode":"${poi.pcode}","poiPname":"${poi.pname}","poiCitycode":"${poi.citycode}","poiCityname":"${poi.cityname}","poiAdcode":"${poi.adcode}","poiAdname":"${poi.adname}","poiRegion":"${poi.pname}/${poi.cityname}/${poi.adname}","poiParent":"${poi.parent}","poiBrief":"${poiBrief}"},`;
             });
             fs.appendFile("./AHQ_L.txt", ids, (error)=> {
                 if (error) return console.log("追加文件失败" + error.message);
